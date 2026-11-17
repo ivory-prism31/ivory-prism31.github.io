@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3d动画挠痒痒 vk-制作手法与素材图鉴</title>
+<meta name="description" content="3d动画挠痒痒 vk：梳理挠痒痒3D短动画在VK平台上的角色绑定、表情节奏、音效搭配与分发路径，附制作流程、常见坑与每周更新图解。">
+<meta name="keywords" content="3d动画挠痒痒 vk">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4623a'/%3E%3Cpath d='M18 30c4-8 24-8 28 0M20 40c3 5 21 5 24 0' stroke='%23fff' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#221c1a;--ink-2:#4b423f;--mute:#7c706c;
+  --paper:#fdf8f3;--card:#fff;--line:#eadfd6;
+  --brand:#f4623a;--brand-d:#c8411c;--brand-soft:#ffe9e0;
+  --accent:#2f6f6a;--accent-soft:#e2f1ee;
+  --warn:#8a5a00;--warn-soft:#fff3d8;
+  --r:14px;--r-s:8px;
+  --sp:clamp(14px,2.4vw,26px);
+  --shadow:0 2px 4px rgba(60,30,20,.05),0 10px 26px -14px rgba(60,30,20,.22);
+  --font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:112px}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--paper);line-height:1.78;font-size:16px;-webkit-text-size-adjust:100%}
+img{max-width:100%;display:block}
+a{color:var(--brand-d);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+h1,h2,h3,h4{line-height:1.35;margin:0;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 .85em}
+ul,ol{margin:0 0 .9em;padding-left:1.25em}
+li{margin-bottom:.35em}
+.wrap{width:min(1180px,100% - 2*var(--sp));margin-inline:auto}
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:99}
+.skip:focus{left:8px;top:8px}
+
+/* ---------- 吸顶：公告条 + 页头 ---------- */
+.sticky-top{position:sticky;top:0;z-index:50}
+.notice{background:var(--ink);color:#f6efe9;font-size:13.5px}
+.notice .wrap{display:flex;gap:10px;align-items:center;padding:7px 0;min-height:38px;flex-wrap:wrap}
+.notice b{color:#ffb9a0;font-weight:600}
+.notice a{color:#ffd9c8;text-decoration:underline}
+.notice .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex:none;animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+header.site{background:rgba(253,248,243,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:14px;padding:11px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;color:var(--ink);letter-spacing:-.02em;white-space:nowrap}
+.brand:hover{text-decoration:none}
+.brand svg{width:34px;height:34px;flex:none}
+.menu-btn{display:none;margin-left:auto;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.nav a{padding:7px 11px;border-radius:999px;font-size:14.5px;color:var(--ink-2);font-weight:500}
+.nav a:hover{background:var(--brand-soft);color:var(--brand-d);text-decoration:none}
+.nav a.on{background:var(--brand);color:#fff}
+.hd-tools{display:flex;gap:8px;align-items:center}
+.search{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 6px 5px 12px}
+.search label{font-size:13px;color:var(--mute)}
+.search input{border:0;background:transparent;font:inherit;font-size:14px;width:132px;padding:3px 0;color:var(--ink)}
+.search input:focus{outline:none}
+.search button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer}
+.cta{background:var(--brand);color:#fff;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;white-space:nowrap}
+.cta:hover{background:var(--brand-d);text-decoration:none}
+.search-out{width:100%;display:none;padding:0 0 10px;font-size:14px;color:var(--ink-2)}
+.search-out.show{display:block}
+.search-out ul{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:4px;max-height:240px;overflow:auto}
+.search-out li a{display:block;padding:7px 10px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-s);font-size:14px}
+@media(max-width:900px){
+  .menu-btn{display:flex}
+  .nav{display:none;order:5;width:100%;margin:4px 0 8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .nav.open{display:flex}
+  .hd-tools{margin-left:auto}
+}
+@media(max-width:620px){
+  .hd-tools{width:100%;order:6}
+  .search{flex:1}
+  .search input{width:100%}
+  .cta{display:none}
+}
+
+/* ---------- 首屏 ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:
+  radial-gradient(900px 380px at 88% -10%, #ffe2d3 0%, transparent 62%),
+  radial-gradient(700px 320px at 5% 110%, #dff0ec 0%, transparent 58%),
+  var(--paper)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--sp);align-items:center;padding:clamp(26px,4.5vw,52px) 0}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:13px;font-weight:600;color:var(--brand-d);box-shadow:var(--shadow)}
+.hero-tag i{width:8px;height:8px;border-radius:2px;background:var(--brand);display:inline-block;transform:rotate(45deg)}
+h1{font-size:clamp(28px,4.6vw,46px);margin:14px 0 12px;letter-spacing:-.03em}
+h1 em{font-style:normal;color:var(--brand-d);position:relative;white-space:nowrap}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:8px;background:#ffd7c6;z-index:-1;border-radius:3px}
+.hero-desc{font-size:clamp(15px,1.7vw,17px);color:var(--ink-2);max-width:44ch}
+.hero-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;border:1px solid transparent}
+.btn-main{background:var(--brand);color:#fff}
+.btn-main:hover{background:var(--brand-d);text-decoration:none}
+.btn-ghost{background:var(--card);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand-d);text-decoration:none}
+.hero-stats{display:flex;gap:22px;margin-top:24px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:16px}
+.hero-stats div strong{display:block;font-size:22px;color:var(--ink);letter-spacing:-.02em}
+.hero-stats div span{font-size:12.5px;color:var(--mute)}
+.hero-art{position:relative;min-height:280px}
+.hero-art svg{width:100%;height:auto;filter:drop-shadow(0 18px 26px rgba(120,60,40,.16))}
+@media(max-width:880px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero-art{order:-1;min-height:0;max-width:420px}
+}
+
+/* ---------- 布局 ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:var(--sp);padding:var(--sp) 0 clamp(30px,5vw,60px);align-items:start}
+main{min-width:0}
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .rail{order:2}
+}
+section.block{margin-bottom:clamp(24px,3.6vw,40px);scroll-margin-top:112px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(20px,2.6vw,25px)}
+.sec-head h2 small{display:block;font-size:12.5px;font-weight:500;color:var(--mute);letter-spacing:.02em;margin-top:3px}
+.sec-head .more{font-size:13.5px;color:var(--brand-d);font-weight:600;white-space:nowrap}
+.lead{color:var(--ink-2);font-size:15.5px;max-width:70ch}
+
+/* 卡片与网格 */
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-3px);border-color:#f0c4b2}
+.card h3{font-size:16px;margin-bottom:6px}
+.card p{font-size:14.2px;color:var(--ink-2);margin-bottom:8px}
+.meta{font-size:12.5px;color:var(--mute);display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.meta b{color:var(--brand-d);font-weight:600}
+.pill{display:inline-block;background:var(--brand-soft);color:var(--brand-d);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600}
+.pill.g{background:var(--accent-soft);color:var(--accent)}
+@media(max-width:900px){.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.g3,.g2{grid-template-columns:1fr}}
+
+/* 紧凑列表 */
+.tlist{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.tlist li{list-style:none;display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 15px;border-bottom:1px solid var(--line);margin:0;font-size:14.5px}
+.tlist li:last-child{border-bottom:0}
+.tlist{list-style:none;padding:0;margin:0}
+.tlist time{font-size:12.5px;color:var(--mute);font-variant-numeric:tabular-nums}
+.tlist .t{font-weight:600;color:var(--ink)}
+.tlist .t:hover{color:var(--brand-d)}
+.tlist .tag{font-size:11.5px;background:#f3eee9;color:var(--ink-2);border-radius:6px;padding:2px 7px;white-space:nowrap}
+@media(max-width:560px){.tlist li{grid-template-columns:1fr;gap:4px}.tlist .tag{justify-self:start}}
+
+/* 频道标签索引 */
+.index-tags{display:flex;flex-wrap:wrap;gap:9px}
+.index-tags a{display:inline-flex;gap:8px;align-items:baseline;background:var(--card);border:1px solid var(--line);border-radius:var(--r-s);padding:8px 13px;font-size:14.5px;font-weight:600;color:var(--ink);transition:transform .16s ease,background .16s}
+.index-tags a span{font-size:12px;font-weight:500;color:var(--mute)}
+.index-tags a:hover{background:var(--brand-soft);border-color:#f2c1ad;transform:translateY(-2px);text-decoration:none}
+
+/* 深度正文 */
+.article{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}
+.article h2{font-size:clamp(21px,2.8vw,27px);margin-bottom:4px}
+.article .byline{font-size:12.5px;color:var(--mute);margin-bottom:16px}
+.article h3{font-size:17.5px;margin:22px 0 8px;padding-left:11px;border-left:4px solid var(--brand)}
+.article p{font-size:15.6px;color:#332b28}
+.article ol,.article ul{font-size:15.4px;color:#332b28}
+.pull{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 var(--r-s) var(--r-s) 0;padding:13px 16px;margin:16px 0;font-size:15px;color:#1f4c48}
+.pull b{color:#123d3a}
+.check{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.3px}
+.check caption{text-align:left;font-size:13px;color:var(--mute);padding-bottom:6px}
+.check th,.check td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.check th{background:#faf3ed;font-size:13.5px;font-weight:700}
+.check td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:560px){.check{display:block;overflow-x:auto}}
+
+/* 步骤 */
+.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:11px}
+.steps li{counter-increment:s;position:relative;padding:13px 15px 13px 54px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);font-size:14.6px;margin:0}
+.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:13px;top:13px;width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.02em}
+.steps b{color:var(--brand-d)}
+
+/* 对照面板 */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.compare>div{padding:15px 17px}
+.compare>div:first-child{border-right:1px solid var(--line);background:#fdfaf6}
+.compare h3{font-size:15px;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.compare ul{font-size:14.3px;margin:0;padding-left:1.1em;color:var(--ink-2)}
+@media(max-width:640px){.compare{grid-template-columns:1fr}.compare>div:first-child{border-right:0;border-bottom:1px solid var(--line)}}
+
+/* 引语 */
+.quote{background:var(--ink);color:#f7efe9;border-radius:var(--r);padding:20px 22px;position:relative;box-shadow:var(--shadow)}
+.quote::before{content:"“";position:absolute;top:2px;left:14px;font-size:52px;color:#f4623a;opacity:.55;font-family:Georgia,serif;line-height:1}
+.quote p{font-size:16px;margin:0 0 10px;padding-left:26px;color:#f7efe9}
+.quote footer{font-size:13px;color:#c4b3ab;padding-left:26px}
+
+/* 评论 */
+.comments{display:grid;gap:12px}
+.cm{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow)}
+.cm header{display:flex;gap:9px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;flex:none}
+.cm header b{font-size:14px}
+.cm header span{font-size:12px;color:var(--mute)}
+.cm p{font-size:14.4px;margin:0;color:var(--ink-2)}
+.cm .ref{color:var(--brand-d);font-weight:600}
+.stars{color:#d98b2b;font-size:12.5px;letter-spacing:1px;margin-left:auto}
+
+/* FAQ */
+details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+details[open]{border-color:#f0c4b2}
+summary{cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;gap:10px;align-items:flex-start}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";flex:none;width:20px;height:20px;border-radius:6px;background:var(--brand-soft);color:var(--brand-d);display:grid;place-items:center;font-weight:700;font-size:14px;margin-top:2px}
+details[open] summary::before{content:"−"}
+details p{font-size:14.5px;color:var(--ink-2);margin:10px 0 2px;padding-left:30px}
+
+/* 侧栏 */
+.rail{display:grid;gap:14px;position:sticky;top:112px}
+@media(max-width:980px){.rail{position:static}}
+.rail-box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;box-shadow:var(--shadow)}
+.rail-box h3{font-size:14.5px;margin-bottom:10px;display:flex;gap:7px;align-items:center}
+.rail-box h3 i{width:9px;height:9px;border-radius:3px;background:var(--brand);transform:rotate(45deg)}
+.rail-nav{list-style:none;margin:0;padding:0;display:grid;gap:2px;font-size:14px}
+.rail-nav a{display:block;padding:6px 9px;border-radius:7px;color:var(--ink-2);border-left:2px solid transparent}
+.rail-nav a:hover{background:#faf3ed;text-decoration:none}
+.rail-nav a.act{background:var(--brand-soft);color:var(--brand-d);font-weight:600;border-left-color:var(--brand)}
+.timeline{list-style:none;margin:0;padding:0 0 0 16px;border-left:2px solid var(--line);display:grid;gap:11px;font-size:13.8px}
+.timeline li{position:relative;margin:0;color:var(--ink-2)}
+.timeline li::before{content:"";position:absolute;left:-22px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--card);border:2px solid var(--brand)}
+.timeline b{display:block;color:var(--ink);font-size:14px}
+.timeline time{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.tagcloud{display:flex;flex-wrap:wrap;gap:7px}
+.tagcloud a{background:#f6f1ec;border-radius:999px;padding:4px 11px;font-size:13px;color:var(--ink-2)}
+.tagcloud a:hover{background:var(--brand-soft);color:var(--brand-d);text-decoration:none}
+
+/* 资讯双栏 */
+.news{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.news .card{padding:14px 16px}
+.news .card h3{font-size:15.2px}
+@media(max-width:620px){.news{grid-template-columns:1fr}}
+
+/* 页脚 */
+footer.site{background:#211b19;color:#cfc2ba;margin-top:10px}
+footer.site .wrap{padding:clamp(26px,4vw,44px) 0 0}
+.f-top{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:var(--sp);padding-bottom:26px}
+.f-brand{display:flex;align-items:center;gap:9px;font-weight:800;color:#fff;font-size:16px;margin-bottom:9px}
+.f-brand svg{width:30px;height:30px}
+.f-top p{font-size:13.6px;color:#b8a9a0;max-width:32ch;margin:0}
+.f-col h4{font-size:13.5px;color:#fff;margin-bottom:9px;letter-spacing:.03em}
+.f-col ul{list-style:none;margin:0;padding:0;font-size:13.6px;display:grid;gap:6px}
+.f-col a{color:#c3b4ab}
+.f-col a:hover{color:#ffb9a0}
+.f-note{border-top:1px solid #3a302c;padding:14px 0 0;font-size:12.5px;color:#9d8f87;line-height:1.85}
+.f-bottom{border-top:1px solid #3a302c;margin-top:14px;padding:13px 0 26px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:#8e8079}
+@media(max-width:880px){.f-top{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.f-top{grid-template-columns:1fr}}
+
+/* 回到顶部 */
+#toTop{position:fixed;right:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:40}
+#toTop.show{opacity:1;pointer-events:auto}
+#toTop:hover{transform:translateY(-2px);color:var(--brand-d)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  .card:hover,.index-tags a:hover,#toTop:hover{transform:none}
+}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<div class="sticky-top">
+  <div class="notice">
+    <div class="wrap">
+      <span class="dot" aria-hidden="true"></span>
+      <span><b>3d动画挠痒痒 vk</b> 素材库：11月7日新增「羽毛扫、指腹点按、脚底软刷」三段绑定工程，脚底软刷版补了足弓形变曲线</span>
+      <a href="/#latest">看更新时间线</a>
+    </div>
+  </div>
+  <header class="site">
+    <div class="wrap hd">
+      <a class="brand" href="/#top" aria-label="3d动画挠痒痒 vk 首页">
+        <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+          <rect width="64" height="64" rx="15" fill="#f4623a"/>
+          <path d="M16 28c5-9 27-9 32 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M18 40c4 6 24 6 28 0" stroke="#ffd9c8" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <circle cx="26" cy="33" r="2.6" fill="#fff"/><circle cx="38" cy="33" r="2.6" fill="#fff"/>
+          <path d="M45 13l3 6 6 2-6 2-3 6-3-6-6-2 6-2z" fill="#ffe0b8"/>
+        </svg>
+        3d动画挠痒痒 vk
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        频道
+      </button>
+      <nav class="nav" id="mainNav" aria-label="主题导航">
+        <a href="/#overview">领域概览</a>
+        <a href="/#pick">精选推荐</a>
+        <a href="/#latest">最新更新</a>
+        <a href="/#channels">频道索引</a>
+        <a href="/#deep">深度解析</a>
+        <a href="/#guide">体验指南</a>
+        <a href="/#faq">常见问题</a>
+      </nav>
+      <div class="hd-tools">
+        <div class="search" role="search">
+          <label for="q" class="sr">站内查找</label>
+          <input id="q" type="search" placeholder="找绑定、音效、表情…" autocomplete="off">
+          <button type="button" id="qBtn">查找</button>
+        </div>
+        <a class="cta" href="/#pick">本周片单</a>
+      </div>
+      <div class="search-out" id="searchOut" role="status" aria-live="polite"></div>
+    </div>
+  </header>
+</div>
+
+<div id="top"></div>
+
+<section class="hero" aria-labelledby="heroH1">
+  <div class="wrap">
+    <div>
+      <span class="hero-tag"><i aria-hidden="true"></i>VK 短动画 · 第 46 周选片</span>
+      <h1 id="heroH1"><em>3d动画挠痒痒 vk</em></h1>
+      <p class="hero-desc">把挠痒痒这类两秒笑点做成可复用的 3D 短动画：角色绑定怎么留出手指余量、脚底形变曲线怎么画、VK 竖版 9:16 裁掉多少，都在这里拆成可核对的条目。</p>
+      <div class="hero-acts">
+        <a class="btn btn-main" href="/#latest">看本周新增工程</a>
+        <a class="btn btn-ghost" href="/#deep">读形变判断</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>128</strong><span>收录短动画条目</span></div>
+        <div><strong>36</strong><span>可拆解绑定案例</span></div>
+        <div><strong>9</strong><span>个可搜索频道</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 420 320" role="img">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffe6d9"/><stop offset="1" stop-color="#f4b7a0"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#2f6f6a"/><stop offset="1" stop-color="#6fb3a8"/>
+          </linearGradient>
+        </defs>
+        <rect x="8" y="14" width="404" height="292" rx="26" fill="#fff" stroke="#eadfd6"/>
+        <rect x="8" y="14" width="404" height="34" rx="26" fill="#fbf2ec"/>
+        <circle cx="30" cy="31" r="5" fill="#f4623a"/><circle cx="48" cy="31" r="5" fill="#f6c15a"/><circle cx="66" cy="31" r="5" fill="#7fc3b6"/>
+        <text x="330" y="36" font-family="sans-serif" font-size="12" fill="#a2938c">9:16 · 12fps</text>
+        <ellipse cx="196" cy="232" rx="112" ry="30" fill="#f3e6dd"/>
+        <path d="M118 168c0-52 42-88 84-88s82 34 82 86c0 44-34 72-82 72s-84-26-84-70z" fill="url(#lg1)" stroke="#e2a68f" stroke-width="2"/>
+        <circle cx="168" cy="150" r="7" fill="#3a2d29"/>
+        <circle cx="246" cy="150" r="7" fill="#3a2d29"/>
+        <path d="M170 188c14 14 46 14 60 0" stroke="#3a2d29" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M196 160c-8 14-4 24 8 24" stroke="#d98b74" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M300 128c16-10 30-8 42 2" stroke="url(#lg2)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M302 146c18-4 34 0 44 12" stroke="url(#lg2)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <g stroke="#2f6f6a" stroke-width="3" fill="none" stroke-linecap="round">
+          <path d="M326 100l16-14"/><path d="M338 112l22-6"/><path d="M344 126l24 2"/>
+        </g>
+        <g fill="none" stroke="#f4623a" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+          <path d="M96 118c-12-8-18-20-16-32"/>
+          <path d="M84 132c-16-4-26-14-28-26"/>
+          <path d="M80 150c-18 0-30-6-36-18"/>
+        </g>
+        <rect x="252" y="238" width="130" height="52" rx="12" fill="#fbf2ec" stroke="#eadfd6"/>
+        <text x="266" y="258" font-family="sans-serif" font-size="11.5" fill="#7c706c">形变权重</text>
+        <rect x="266" y="266" width="100" height="8" rx="4" fill="#e8ded7"/>
+        <rect x="266" y="266" width="72" height="8" rx="4" fill="#f4623a"/>
+        <text x="266" y="286" font-family="sans-serif" font-size="10.5" fill="#a2938c">足弓 0.72 · 趾根 0.55</text>
+        <g>
+          <rect x="34" y="232" width="74" height="58" rx="10" fill="#fff" stroke="#eadfd6"/>
+          <text x="46" y="252" font-family="sans-serif" font-size="10.5" fill="#7c706c">关键帧</text>
+          <text x="46" y="272" font-family="sans-serif" font-size="15" font-weight="bold" fill="#221c1a">48</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout">
+<main id="main">
+
+  <!-- 1 领域概览 -->
+  <section class="block" id="overview" aria-labelledby="h-overview">
+    <div class="sec-head">
+      <h2 id="h-overview">领域概览<small>这类短动画由什么构成</small></h2>
+    </div>
+    <p class="lead">挠痒痒题材在 3D 短动画里是个很窄的赛道：单条时长多在 6 到 15 秒，动作只发生在手指、脚底、腰侧三个接触点上，成败几乎全在接触瞬间的形变和反应延迟。VK 上的分发习惯是竖版 9:16 优先，横版需要二次裁切。</p>
+    <div class="grid g3">
+      <div class="card">
+        <h3>角色绑定层</h3>
+        <p>手部至少需要 15 根驱动骨，脚底需要 3 组刷状权重。Blender 4.2 的 Rigify 手部预设只给到指节两级，做挠痒痒要手动补指腹骨。</p>
+        <span class="pill">绑定</span>
+      </div>
+      <div class="card">
+        <h3>表情与反应层</h3>
+        <p>笑点常落在被挠者延迟 4 到 6 帧的反应上。VK 上播放量靠前的条目普遍把反应滞后压在 5 帧，个别喜剧向做到 8 帧。</p>
+        <span class="pill g">表演</span>
+      </div>
+      <div class="card">
+        <h3>声音与发布层</h3>
+        <p>羽毛扫高频摩擦音要单独铺一轨，混在环境音里会被 VK 压缩掉。9:16 导出建议 1080×1920、码率 8Mbps 起。</p>
+        <span class="pill">发布</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 精选推荐 -->
+  <section class="block" id="pick" aria-labelledby="h-pick">
+    <div class="sec-head">
+      <h2 id="h-pick">精选内容推荐<small>本周可逐帧拆解的六条</small></h2>
+      <a class="more" href="/#latest">全部条目 →</a>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <img src="https://picsum.photos/seed/ticklefoot78/480/270" width="480" height="270" loading="lazy" alt="足弓软刷形变测试的灰模截图" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>足弓软刷形变测试 v3</h3>
+        <p>作者把刷毛做成 12 段刚体链，脚底受压后回弹用了 3 帧，比常见 1 帧回弹更软。工程文件注明 Blender 4.2.3。</p>
+        <div class="meta"><b>11月7日</b><span>· 6.4 万播放</span></div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/featherhand21/480/270" width="480" height="270" loading="lazy" alt="羽毛在手部特写前扫过的画面" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>羽毛扫手部特写 9:16 裁切对照</h3>
+        <p>同一条片子出了横竖两版，竖版把手腕裁掉了四分之一。评论里有人指出笑点因此丢了半拍。</p>
+        <div class="meta"><b>11月5日</b><span>· 拆解笔记 14 条</span></div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/laughdelay33/480/270" width="480" height="270" loading="lazy" alt="角色面部表情延迟对比格子" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>反应延迟 4 帧与 8 帧对比</h3>
+        <p>同一条绑定，把笑的表情往后推 4 帧，节奏更稳；推到 8 帧像在等提示音。作者保留了 24fps 时间轴截图。</p>
+        <div class="meta"><b>11月4日</b><span>· 对照面板 2 组</span></div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/ribsandwaist91/480/270" width="480" height="270" loading="lazy" alt="腰侧被触碰时的布料褶皱模型" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>腰侧触碰的布料褶皱预设</h3>
+        <p>用 Marvelous Designer 12 做了三档褶皱，松紧差在 0.6cm。穿厚毛衣时整条动画的滑稽感会减半。</p>
+        <div class="meta"><b>11月3日</b><span>· 预设 3 档</span></div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/softbrushsound55/480/270" width="480" height="270" loading="lazy" alt="音效轨道与波形界面截图" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>软刷摩擦音的分轨做法</h3>
+        <p>高频摩擦单独一轨、压低 6dB 再混，VK 上传后不被削掉。录了棉签、化妆刷、海绵三种材质。</p>
+        <div class="meta"><b>11月2日</b><span>· 音轨 5 条</span></div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/seed/toetickle67/480/270" width="480" height="270" loading="lazy" alt="脚趾逐根弹动的关键帧列表" style="border-radius:10px;object-fit:cover;margin-bottom:10px">
+        <h3>脚趾逐根弹动的关键帧表</h3>
+        <p>五根趾头错开 2 帧起跳，比同时弹动自然。作者附了逐帧参数，趾根旋转角在 8° 到 14° 之间。</p>
+        <div class="meta"><b>11月1日</b><span>· 关键帧 48 个</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 最新更新 -->
+  <section class="block" id="latest" aria-labelledby="h-latest">
+    <div class="sec-head">
+      <h2 id="h-latest">最新更新<small>工程、音效与教程的上新记录</small></h2>
+    </div>
+    <ul class="tlist">
+      <li><time datetime="2026-11-08">今天</time><a class="t" href="/#pick">足弓软刷形变测试 v3 工程开源，附 Blender 4.2.3 场景</a><span class="tag">工程</span></li>
+      <li><time datetime="2026-11-07">11月7日</time><a class="t" href="/#deep">形变权重笔记补写：足弓 0.72 与趾根 0.55 的取值依据</a><span class="tag">笔记</span></li>
+      <li><time datetime="2026-11-06">11月6日</time><a class="t" href="/#faq">FAQ 增加「手指骨不够用怎么办」一条</a><span class="tag">问答</span></li>
+      <li><time datetime="2026-11-05">11月5日</time><a class="t" href="/#pick">羽毛扫手部特写竖版重剪，补回手腕动作</a><span class="tag">重剪</span></li>
+      <li><time datetime="2026-11-04">11月4日</time><a class="t" href="/#latest">新增反应延迟对照面板，24fps 时间轴截图 2 张</a><span class="tag">对照</span></li>
+      <li><time datetime="2026-11-02">11月2日</time><a class="t" href="/#channels">音效频道收进棉签、化妆刷、海绵三种摩擦录音</a><span class="tag">音效</span></li>
+      <li><time datetime="2026-10-31">10月31日</time><a class="t" href="/#rank">周榜首次按「形变可拆解度」排序而非播放量</a><span class="tag">榜单</span></li>
+      <li><time datetime="2026-10-29">10月29日</time><a class="t" href="/#reviews">评论精选补入三条批评意见，涉及腰侧褶皱过重</a><span class="tag">评论</span></li>
+    </ul>
+  </section>
+
+  <!-- 4 频道索引 -->
+  <section class="block" id="channels" aria-labelledby="h-channels">
+    <div class="sec-head">
+      <h2 id="h-channels">分类入口<small>九个可搜索的具体频道</small></h2>
+    </div>
+    <div class="index-tags">
+      <a href="/#deep">羽毛扫挠痒动画<span>21 条</span></a>
+      <a href="/#deep">脚底软刷形变<span>18 条</span></a>
+      <a href="/#pick">手指点按绑定<span>16 条</span></a>
+      <a href="/#pick">反应延迟逐帧<span>14 条</span></a>
+      <a href="/#guide">腰侧布料褶皱<span>11 条</span></a>
+      <a href="/#latest">摩擦音分轨混音<span>9 条</span></a>
+      <a href="/#faq">竖版 9:16 裁切<span>8 条</span></a>
+      <a href="/#pick">脚趾逐根弹动<span>7 条</span></a>
+      <a href="/#rank">VK 短动画参数<span>6 条</span></a>
+    </div>
+  </section>
+
+  <!-- 5 深度解析（唯一主体阅读区） -->
+  <section class="block" id="deep" aria-labelledby="h-deep">
+    <div class="sec-head">
+      <h2 id="h-deep">深度解析<small>形变权重到底该怎么分配</small></h2>
+    </div>
+    <article class="article">
+      <h2 style="font-size:18px;border:0;padding:0;margin:0 0 4px">软刷比硬指更上镜，但代价在多出 3 倍权重</h2>
+      <div class="byline">整理 / 素材库编辑组 · 核对时间 2026年11月8日</div>
+      <p>先给结论：在 9:16 竖版里，同一角色用软刷做挠痒痒，观众停留时长平均比用手指多 1.8 秒；但绑定时长会从约 4 小时涨到 13 小时上下，多出来的部分全耗在刷毛刚体链和脚底回弹曲线上。这个判断可以按下面的条目逐项核对，也可以被证伪——只要找到一条软刷版停留更短、且绑定时长更省的对照。</p>
+
+      <h3>案例时间线：三段测试是同一个角色</h3>
+      <p>测试用的是同一个女性角色灰模，身高 1.68 米，脚长 23.5 厘米，导入 Blender 4.2.3 后未改比例。三段分别在 10 月 12 日、10 月 19 日、10 月 26 日录制，每段都是 8 秒、24fps、1080×1920。</p>
+      <ol>
+        <li>第一段只用食指与中指指腹点按脚底，接触帧 12 帧，回弹 1 帧。</li>
+        <li>第二段换成 12 段刚体链的软刷，接触帧仍是 12 帧，回弹拉到 3 帧。</li>
+        <li>第三段在第二段基础上加了足弓形变曲线，趾根权重从 0.55 提到 0.68。</li>
+      </ol>
+      <p>播放端数据来自 VK 视频后台，三段发布的账号相同，粉丝数在 10 月 26 日前稳定在 2.4 万，所以粉丝增量对停留时长的影响可以大致忽略。第二段平均停留 6.1 秒，第三段 7.4 秒，第一段只有 4.3 秒。</p>
+
+      <div class="pull">
+        <b>可反驳的判断：</b>回弹从 1 帧拉到 3 帧，是停留时长增长的唯一主因吗？第三段与第二段的差别不止回弹，还多了足弓曲线。若有人单独复测「只改回弹」，很可能得不到同样的差值。
+      </div>
+
+      <h3>数据对比：权重与工时的取舍</h3>
+      <table class="check">
+        <caption>三段测试的绑定参数与工时（同一角色、同一场景）</caption>
+        <thead>
+          <tr><th>测试段</th><th>接触方式</th><th class="num">回弹帧</th><th class="num">足弓权重</th><th class="num">绑定时长</th><th class="num">平均停留</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>第一段</td><td>双指指腹</td><td class="num">1</td><td class="num">0.40</td><td class="num">3.9 小时</td><td class="num">4.3 秒</td></tr>
+          <tr><td>第二段</td><td>软刷 12 段链</td><td class="num">3</td><td class="num">0.40</td><td class="num">13.2 小时</td><td class="num">6.1 秒</td></tr>
+          <tr><td>第三段</td><td>软刷 + 足弓曲线</td><td class="num">3</td><td class="num">0.72</td><td class="num">14.6 小时</td><td class="num">7.4 秒</td></tr>
+        </tbody>
+      </table>
+      <p>工时统计口径是单人操作、含调权重与试渲染，不含音效。软刷版贵在 12 段刚体链每段都要单独刷权重，刷错一段整条刷毛就僵。第三段只多花 1.4 小时，停留却多 1.3 秒，是性价比最高的一档；把足弓推到 0.85 以上时，脚背会出现不自然的塌陷，10 月 26 日那版试过 0.88，回退到 0.72。</p>
+
+      <h3>说法差异：两条评论对回弹的解读相反</h3>
+      <p>11 月 2 日，VK 账号 @motion_notes 在第二段下留言，认为 3 帧回弹「像刷子在皮肤上黏了一下」，比 1 帧更有真实感。11 月 3 日，账号 @kf_frame 发帖反驳，说回弹拉长会让接触瞬间的「痒感」变钝，1 帧的弹开才有惊吓感，还贴了自己 10 月 30 日的 60fps 逐帧图。</p>
+      <ul>
+        <li><b>可核对的事实：</b>第二段回弹确为 3 帧，@kf_frame 的视频标注为 60fps、逐帧可见 5 帧回弹（换算到 24fps 约 2 帧）。</li>
+        <li><b>原话与转述：</b>@motion_notes 的原话是「黏一下」，@kf_frame 转述成「拖沓」，措辞已偏移，不能直接当同一观点对比。</li>
+        <li><b>推测：</b>两人看的可能是不同裁切版本，竖版裁掉手腕后，接触点的位置感会变，回弹感受随之改变。</li>
+      </ul>
+
+      <h3>规则前后变化：VK 竖版压缩改了阈值</h3>
+      <p>10 月下旬 VK 视频页启用了新的转码参数，1080×1920、8Mbps 以下的文件基本原样保留，超过 10Mbps 会被重压。测试中第一次上传用了 12Mbps，脚底刷毛的高频细节被压成一团糊，停留掉到 5.2 秒；改用 8Mbps 后回到 7.4 秒。同一条文件在 10 月 20 日前上传时没有被压，所以旧条目和新条目不能直接比码率。</p>
+      <p>另外，脚底形变的清晰度还受机位限制。竖版画面里脚底占比约 38%，低于横版的 55%，接触细节本身就更小。想保住形变，得把镜头推近，或者把接触点往画面上方挪，代价是角色全身出现率下降。</p>
+    </article>
+  </section>
+
+  <!-- 6 体验指南 -->
+  <section class="block" id="guide" aria-labelledby="h-guide">
+    <div class="sec-head">
+      <h2 id="h-guide">体验指南<small>从零做一条 8 秒片子</small></h2>
+    </div>
+    <ol class="steps">
+      <li><b>先定接触点。</b>脚底、腰侧、腋下三选一，别贪多。8 秒里塞两个接触点，表情节奏会被打断，测试中失败率明显偏高。</li>
+      <li><b>手部补骨。</b>Rigify 手部预设补 4 根指腹骨，位置在第 2 与第 3 指节之间，权重先用 0.5 起。</li>
+      <li><b>做接触帧。</b>接触瞬间加 1 帧压扁，接触后 3 帧回弹，回弹曲线用缓出，无需要更硬就手动拉。</li>
+      <li><b>表情延后。</b>笑的表情整体往后推 5 帧，眼角与嘴角错开 1 帧，避免整张脸同时动。</li>
+      <li><b>音效分轨。</b>摩擦音单独一轨，高频抬 2dB 后整体压 6dB，再和低频呼吸声混。</li>
+      <li><b>导出竖版。</b>1080×1920、8Mbps、H.264，文件控制在 30MB 以内，减少 VK 二次转码带来的细节损失。</li>
+    </ol>
+    <div class="compare" style="margin-top:14px">
+      <div>
+        <h3><span class="pill g">省时做法</span>先出灰模版</h3>
+        <ul>
+          <li>不做布料，腰侧接触只用形变球代替</li>
+          <li>音效直接借素材库棉签录音</li>
+          <li>8 秒片约 4 小时出第一版</li>
+          <li>适合先验证节奏，再决定要不要精修</li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="pill">精修做法</span>刷毛与褶皱全上</h3>
+        <ul>
+          <li>刷毛 12 段刚体链逐段刷权重</li>
+          <li>Marvelous Designer 12 出三档褶皱</li>
+          <li>8 秒片约 14 小时出第一版</li>
+          <li>适合已经确定笑点，只差质感的条目</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 FAQ -->
+  <section class="block" id="faq" aria-labelledby="h-faq">
+    <div class="sec-head">
+      <h2 id="h-faq">常见问题<small>做片时最常卡住的六处</small></h2>
+    </div>
+    <details>
+      <summary>脚底软刷的刷毛为什么一动就穿模？</summary>
+      <p>刷毛用刚体链时，每段之间需要留 0.5 毫米以上的间隙，间隙不足时在快速回弹帧会互相穿插。另一个原因是刷毛根部权重没跟着脚底一起动，脚底压下去刷毛却停在原地。检查顺序是先看根部权重，再看段间间隙。</p>
+    </details>
+    <details>
+      <summary>手指骨不够用，只用 3 根指头做点按行不行？</summary>
+      <p>行，但要调整站位。三根指头做点按时，接触面积小，压扁帧要更明显，建议把压扁比例从 1 帧加到 2 帧，同时让无名指和小指自然弯曲收起，别让它们僵直。少于三根指头时，观众容易看成在戳而不是在挠。</p>
+    </details>
+    <details>
+      <summary>反应延迟 4 帧还是 8 帧更合适？</summary>
+      <p>24fps 下 4 到 6 帧是常见区间。4 帧偏敏捷，像提前预判；8 帧偏迟钝，喜剧感强但容易显得假。测试里 5 帧的平均停留最长。另外，延迟帧数要跟音效起音对齐，错开超过 3 帧就会觉得声画不同步。</p>
+    </details>
+    <details>
+      <summary>腰侧触碰为什么加上布料后笑点变弱了？</summary>
+      <p>厚布料的褶皱会把形变吃掉，接触点的位移看不出来。三档褶皱里最松的一档形变可见度最高。若是毛衣类材质，建议把布料厚度从 2 毫米降到 1.2 毫米，或者改用形变球加贴图褶皱的混合做法。</p>
+    </details>
+    <details>
+      <summary>VK 上传后画面发糊，是不是码率设高了？</summary>
+      <p>是。超过 10Mbps 的文件在现版本会被重压，刷毛高频细节首当其冲。改用 8Mbps 后细节基本保留。上传前还可以把锐化关掉，锐化会放大压缩噪点。</p>
+    </details>
+    <details>
+      <summary>脚趾逐根弹动要错开几帧？</summary>
+      <p>相邻脚趾错开 2 帧，五根趾头从大脚趾到小脚趾依次起跳，整体跨度 8 帧。同时弹动会像抽筋，错开太多又像慢动作。趾根旋转角 8° 到 14°，小脚趾取下限。</p>
+    </details>
+  </section>
+
+  <!-- 8 用户评论 -->
+  <section class="block" id="reviews" aria-labelledby="h-reviews">
+    <div class="sec-head">
+      <h2 id="h-reviews">用户评论<small>来自拆解笔记与 VK 留言</small></h2>
+    </div>
+    <div class="comments">
+      <div class="cm">
+        <header><span class="av" style="background:#f4623a">林</span><b>林宇·绑定</b><span>11月7日</span><span class="stars">★★★★★</span></header>
+        <p>足弓 0.72 那版我照着复现了，0.85 确实会塌，但 0.78 在我这个更瘦的模型上没问题，可能跟脚背肉量有关。<span class="ref">「足弓软刷形变测试 v3」</span>的曲线段能再公开一下吗？</p>
+      </div>
+      <div class="cm">
+        <header><span class="av" style="background:#2f6f6a">周</span><b>周迟</b><span>11月6日</span><span class="stars">★★★☆☆</span></header>
+        <p>说实话<span class="ref">「羽毛扫手部特写 9:16 裁切对照」</span>竖版把手腕裁掉之后，整条就不成立了，笑点在手腕那个甩动上，裁掉等于白拍。横版留着更好。</p>
+      </div>
+      <div class="cm">
+        <header><span class="av" style="background:#8a5a00">K</span><b>kf_frame</b><span>11月5日</span><span class="stars">★★★★☆</span></header>
+        <p>回弹 3 帧那条我保留意见，之前贴过 60fps 逐帧，实际看起来更像 2 帧。不是说数据错，是 24fps 和 60fps 换算时容易被四舍五入。另外<span class="ref">「脚趾逐根弹动关键帧表」</span>里小脚趾的 8° 我试了，偏小，10° 更自然。</p>
+      </div>
+      <div class="cm">
+        <header><span class="av" style="background:#7a5aa8">阿</span><b>阿蔓</b><span>11月4日</span><span class="stars">★★★★☆</span></header>
+        <p>音效分轨这招立竿见影，棉签那轨压 6dB 后上传真的没被吃掉。就是化妆刷的声音太细，混完几乎听不见，可能得单独再抬一点。</p>
+      </div>
+      <div class="cm">
+        <header><span class="av" style="background:#c8411c">老</span><b>老麦</b><span>11月3日</span><span class="stars">★★☆☆☆</span></header>
+        <p><span class="ref">「腰侧触碰的布料褶皱预设」</span>第三档褶皱厚得像棉被，接触位移全被吃掉了，不如直接不做布料。引擎配置没问题，是档位设计偏重。</p>
+      </div>
+      <div class="cm">
+        <header><span class="av" style="background:#4b423f">N</span><b>nobody_42</b><span>11月2日</span><span class="stars">★★★★★</span></header>
+        <p>对照面板做得好，三段数据放一张表比看视频直观多了。就是希望绑定时长能标一下是不是含试渲染，我这边试渲染很吃时间。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 相关资讯 -->
+  <section class="block" id="news" aria-labelledby="h-news">
+    <div class="sec-head">
+      <h2 id="h-news">相关资讯<small>工具版本与平台参数</small></h2>
+    </div>
+    <div class="news">
+      <div class="card">
+        <h3>Blender 4.2.3 修正刚体链在低帧率下的抖动</h3>
+        <p>10 月 15 日发布的 4.2.3 修正了刚体链在 12fps 预览时的抖动，刷毛测试可以低帧率预览了。正式渲染仍建议 24fps 以上。</p>
+        <div class="meta"><b>10月15日</b><span>· 版本修正</span></div>
+      </div>
+      <div class="card">
+        <h3>Marvelous Designer 12 新增褶皱松紧滑块</h3>
+        <p>三档预设之外可以手动拖松紧，松紧差 0.6cm 对应到腰侧接触刚好。10 月中旬的 12.1 补丁修了布料穿出手臂的问题。</p>
+        <div class="meta"><b>10月18日</b><span>· 功能更新</span></div>
+      </div>
+      <div class="card">
+        <h3>VK 视频页 10 月下旬调低转码阈值</h3>
+        <p>阈值从约 12Mbps 降到 10Mbps，此前 12Mbps 上传的文件会保留细节，现在会重压。同一条片子新旧上传结果不同，比较时要注意。</p>
+        <div class="meta"><b>10月22日</b><span>· 平台参数</span></div>
+      </div>
+      <div class="card">
+        <h3>开源手部绑定插件补指腹骨预设</h3>
+        <p>10 月 25 日更新的社区插件加了 4 根指腹骨预设，位置在第 2、3 指节之间，权重默认 0.5。对挠痒痒题材算省事，但仍需手动微调。</p>
+        <div class="meta"><b>10月25日</b><span>· 插件</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 榜单 -->
+  <section class="block" id="rank" aria-labelledby="h-rank">
+    <div class="sec-head">
+      <h2 id="h-rank">本周榜单<small>按形变可拆解度排序</small></h2>
+    </div>
+    <ol class="tlist" style="list-style:none;padding:0">
+      <li><time>01</time><a class="t" href="/#pick">足弓软刷形变测试 v3</a><span class="tag">权重公开</span></li>
+      <li><time>02</time><a class="t" href="/#pick">反应延迟 4 帧与 8 帧对比</a><span class="tag">时间轴公开</span></li>
+      <li><time>03</time><a class="t" href="/#pick">脚趾逐根弹动关键帧表</a><span class="tag">参数完整</span></li>
+      <li><time>04</time><a class="t" href="/#news">VK 视频页 10 月下旬调低转码阈值</a><span class="tag">可复测</span></li>
+      <li><time>05</time><a class="t" href="/#guide">软刷摩擦音的分轨做法</a><span class="tag">工程可下载</span></li>
+    </ol>
+  </section>
+
+  <!-- 11 相关推荐 -->
+  <section class="block" id="rel" aria-labelledby="h-rel">
+    <div class="sec-head">
+      <h2 id="h-rel">相关推荐<small>换关键词继续找</small></h2>
+    </div>
+    <div class="index-tags">
+      <a href="/#deep">挠痒痒动画回弹帧数</a>
+      <a href="/#deep">脚底形变权重怎么刷</a>
+      <a href="/#guide">竖版 9:16 挠痒动画导出</a>
+      <a href="/#faq">软刷刷毛穿模修复</a>
+      <a href="/#reviews">手指点按绑定实测</a>
+      <a href="/#latest">VK 短动画码率设置</a>
+      <a href="/#news">Blender 刚体链抖动</a>
+      <a href="/#guide">腰侧布料褶皱档位</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- 侧栏（DOM 顺序在主内容之后） -->
+<aside class="rail" aria-label="辅助导航">
+  <div class="rail-box">
+    <h3><i aria-hidden="true"></i>本页栏目</h3>
+    <ul class="rail-nav" id="railNav">
+      <li><a href="/#overview">领域概览</a></li>
+      <li><a href="/#pick">精选内容推荐</a></li>
+      <li><a href="/#latest">最新更新</a></li>
+      <li><a href="/#channels">分类入口</a></li>
+      <li><a href="/#deep">深度解析</a></li>
+      <li><a href="/#guide">体验指南</a></li>
+      <li><a href="/#faq">常见问题</a></li>
+      <li><a href="/#reviews">用户评论</a></li>
+      <li><a href="/#news">相关资讯</a></li>
+      <li><a href="/#rank">本周榜单</a></li>
+      <li><a href="/#rel">相关推荐</a></li>
+    </ul>
+  </div>
+  <div class="rail-box">
+    <h3><i aria-hidden="true"></i>近七日时间线</h3>
+    <ul class="timeline">
+      <li><b>足弓软刷 v3 开源</b><time datetime="2026-11-08">11月8日</time></li>
+      <li><b>形变权重笔记补写</b><time datetime="2026-11-07">11月7日</time></li>
+      <li><b>羽毛扫竖版重剪</b><time datetime="2026-11-05">11月5日</time></li>
+      <li><b>反应延迟对照面板</b><time datetime="2026-11-04">11月4日</time></li>
+      <li><b>摩擦录音三材质入库</b><time datetime="2026-11-02">11月2日</time></li>
+    </ul>
+  </div>
+  <div class="rail-box">
+    <h3><i aria-hidden="true"></i>高频搜索词</h3>
+    <div class="tagcloud">
+      <a href="/#deep">回弹帧数</a><a href="/#deep">足弓权重</a><a href="/#guide">指腹骨</a>
+      <a href="/#faq">刷毛穿模</a><a href="/#pick">反应延迟</a><a href="/#guide">摩擦音分轨</a>
+      <a href="/#latest">码率 8Mbps</a><a href="/#reviews">布料褶皱</a><a href="/#pick">脚趾弹动</a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-top">
+      <div>
+        <div class="f-brand">
+          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+            <rect width="64" height="64" rx="15" fill="#f4623a"/>
+            <path d="M16 28c5-9 27-9 32 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M18 40c4 6 24 6 28 0" stroke="#ffd9c8" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <circle cx="26" cy="33" r="2.6" fill="#fff"/><circle cx="38" cy="33" r="2.6" fill="#fff"/>
+          </svg>
+          3d动画挠痒痒 vk
+        </div>
+        <p>把接触瞬间的形变、延迟与声音拆成可复现的参数，一周一版。</p>
+      </div>
+      <div class="f-col">
+        <h4>频道</h4>
+        <ul>
+          <li><a href="/#channels">羽毛扫挠痒动画</a></li>
+          <li><a href="/#channels">脚底软刷形变</a></li>
+          <li><a href="/#channels">手指点按绑定</a></li>
+          <li><a href="/#channels">摩擦音分轨混音</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>栏目</h4>
+        <ul>
+          <li><a href="/#deep">深度解析</a></li>
+          <li><a href="/#guide">体验指南</a></li>
+          <li><a href="/#rank">本周榜单</a></li>
+          <li><a href="/#faq">常见问题</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>条目</h4>
+        <ul>
+          <li><a href="/#pick">足弓软刷形变测试 v3</a></li>
+          <li><a href="/#pick">反应延迟对照</a></li>
+          <li><a href="/#news">VK 转码阈值变化</a></li>
+          <li><a href="/#reviews">用户评论</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="f-note">文中角色、账号、播放量与工时均为示例数据，用于说明参数关系，不代表真实作者与真实播放记录。工程版本号、软件版本与平台参数按 2026 年 11 月 8 日前可查信息整理，平台规则可能随时调整。页脚更新时间 2026年11月8日，对应正文更新项：足弓软刷形变测试 v3 工程、形变权重笔记补写、FAQ 新增一条。</p>
+    <div class="f-bottom">
+      <span>© 2026 3d动画挠痒痒 vk 素材库</span>
+      <span>内容整理 · 条目核对 · 每周更新</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" type="button" aria-label="回到顶部">↑</button>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "3d动画挠痒痒 vk",
+      "inLanguage": "zh-CN",
+      "description": "3D 挠痒痒短动画的绑定、形变、音效与 VK 分发拆解素材库。"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "脚底软刷的刷毛为什么一动就穿模？",
+          "acceptedAnswer": {"@type": "Answer", "text": "刷毛用刚体链时每段之间要留 0.5 毫米以上间隙，间隙不足会在快速回弹帧穿插；另一个原因是刷毛根部权重没跟着脚底一起动。"}
+        },
+        {
+          "@type": "Question",
+          "name": "手指骨不够用，只用 3 根指头做点按行不行？",
+          "acceptedAnswer": {"@type": "Answer", "text": "可行。三根指头接触面积小，压扁帧建议从 1 帧加到 2 帧，无名指和小指自然弯曲收起，避免看成在戳。"}
+        },
+        {
+          "@type": "Question",
+          "name": "反应延迟 4 帧还是 8 帧更合适？",
+          "acceptedAnswer": {"@type": "Answer", "text": "24fps 下 4 到 6 帧常见，5 帧测试平均停留最长。延迟要与音效起音对齐，错开超过 3 帧会声画不同步。"}
+        },
+        {
+          "@type": "Question",
+          "name": "腰侧触碰为什么加上布料后笑点变弱了？",
+          "acceptedAnswer": {"@type": "Answer", "text": "厚布料褶皱会吃掉形变，接触位移看不清。最松一档形变可见度最高；毛衣类材质可把厚度从 2 毫米降到 1.2 毫米。"}
+        },
+        {
+          "@type": "Question",
+          "name": "VK 上传后画面发糊，是不是码率设高了？",
+          "acceptedAnswer": {"@type": "Answer", "text": "超过 10Mbps 的文件会被重压，刷毛高频细节先受损失，改用 8Mbps 多数细节可保留，上传前建议关闭锐化。"}
+        },
+        {
+          "@type": "Question",
+          "name": "脚趾逐根弹动要错开几帧？",
+          "acceptedAnswer": {"@type": "Answer", "text": "相邻脚趾错开 2 帧，五根脚趾整体跨度 8 帧，趾根旋转角 8° 到 14°，小脚趾取下限。"}
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var menuBtn=document.getElementById('menuBtn'),
+      nav=document.getElementById('mainNav');
+  if(menuBtn&&nav){
+    menuBtn.addEventListener('click',function(){
+      var open=nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded',open?'true':'false');
+    });
+    nav.addEventListener('click',function(e){
+      if(e.target.tagName==='A'&&window.innerWidth<=900){
+        nav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  var q=document.getElementById('q'),
+      qBtn=document.getElementById('qBtn'),
+      out=document.getElementById('searchOut');
+
+  function norm(s){return (s||'').toLowerCase().replace(/\s+/g,'');}
+
+  function buildIndex(){
+    var nodes=document.querySelectorAll('main h2, main h3, main summary, main .t, main .index-tags a, main .card p');
+    var seen={},list=[];
+    Array.prototype.forEach.call(nodes,function(n){
+      var txt=(n.textContent||'').trim().replace(/\s+/g,' ');
+      if(txt.length<3||seen[txt])return;
+      seen[txt]=1;
+      var target=n.closest('section');
+      var id=target?target.id:'top';
+      var isHeading=(n.tagName==='H2'||n.tagName==='H3'||n.tagName==='SUMMARY');
+      list.push({t:txt,id:id,h:isHeading});
+    });
+    return list;
+  }
+  var IDX=buildIndex();
+
+  function run(){
+    var v=norm(q.value);
+    out.innerHTML='';
+    if(!v){out.classList.remove('show');return;}
+    var hits=IDX.filter(function(o){return norm(o.t).indexOf(v)>-1;}).slice(0,8);
+    out.classList.add('show');
+    if(!hits.length){
+      out.innerHTML='<p style="margin:0">没有匹配「'+q.value.replace(/[<>&]/g,'')+'」的条目。试试“回弹”“足弓”“穿模”“码率”。</p>';
+      return;
+    }
+    var html='<p style="margin:0 0 2px">找到 '+hits.length+' 条相关：</p><ul>';
+    hits.forEach(function(o){
+      html+='<li><a href="/#'+o.id+'">'+o.t+'</a></li>';
+    });
+    out.innerHTML=html+'</ul>';
+  }
+
+  if(q&&qBtn&&out){
+    qBtn.addEventListener('click',run);
+    q.addEventListener('input',run);
+    q.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();run();}});
+  }
+
+  var toTop=document.getElementById('toTop');
+  function onScroll(){
+    if(window.scrollY>560){toTop.classList.add('show');}else{toTop.classList.remove('show');}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  toTop.addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  var railLinks=Array.prototype.slice.call(document.querySelectorAll('#railNav a'));
+  var secs=railLinks.map(function(a){
+    var id=a.getAttribute('href').replace('/#','');
+    return document.getElementById(id);
+  });
+  function highlight(){
+    var pos=window.scrollY+140,cur=-1;
+    secs.forEach(function(s,i){
+      if(s&&s.offsetTop<=pos)cur=i;
+    });
+    railLinks.forEach(function(a,i){a.classList.toggle('act',i===cur);});
+  }
+  window.addEventListener('scroll',highlight,{passive:true});
+  window.addEventListener('resize',highlight);
+  highlight();
+})();
+</script>
+</body>
+                                                                                                  </html>
